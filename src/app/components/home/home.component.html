@@ -1,0 +1,52 @@
+<div class="container pb-3">
+  <div id="sub-navigation">
+    <ul>
+      <li><a (click)="showall()">SHOW ALL</a></li>
+      <li><a (click)="getLatestMovies()">LATEST TRAILERS</a></li>
+      <li><a (click)="topRated()">TOP RATED</a></li>
+      <li><a (click)="trending()">TRENDING</a></li>
+    </ul>
+    <div id="search" style="margin-top: -15px;">
+      <form [formGroup]="searchData" (ngSubmit)="search(searchData.value)">
+        <input type="text" formControlName="searchDetails" placeholder="Enter search here" [(ngModel)]="searchdata"
+          class="blink search-field rounded ms-2 text-light" />
+        <button type="submit" class="search-button ms-2" [disabled]="!searchData.valid">GO!</button>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+
+    <div class="col-lg-3 mt-3" *ngFor="let movie of allmovies | paginate:{ itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalResults}">
+      <div class="card bg-dark rounded" style="height: 390px;">
+        <a routerLink="review/{{movie.id}}"><img class="card-img-top " src={{img+movie.poster_path}}
+            alt="{{movie.original_title}}"></a>
+        <div class="card-body">
+          <div class="">
+            <h2 class="card-title " style="width: 88%; float:left">{{movie.original_title}}</h2>
+            <p class="rounded text-dark" style="width: 12%; float:right; padding: 2px;"
+              [ngStyle]="{'background-color': getColor(movie.vote_average)}">{{movie.vote_average | number:'1.1-1'}}</p>
+          </div>
+          <span class="card-text p-3">
+            <h3 class="text-warning">Overview</h3> <br>{{movie.overview}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <hr class="mt-3">
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3"></div>
+      <div class="col-lg-6 text-center">
+        <pagination-controls class="my-pagination bg-danger text-warning" (pageChange)="getPage($event)"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--  <div class="pagination">
+      <div class="page disabled" id="prev">Previous Page</div>
+      <div class="current" id="current">1</div>
+      <div class="page" id="next">Next Page</div>
+    </div> -->
